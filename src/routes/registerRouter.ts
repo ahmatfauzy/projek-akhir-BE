@@ -6,7 +6,7 @@ import { getAllUsers } from "../controllers/getAllUser";
 const registerRouter = Router();
 
 registerRouter.post("/", registerUser);
-registerRouter.delete("/delete/:id", deleteUser);
-registerRouter.get("/get", getAllUsers);
+registerRouter.delete("/:id", deleteUser);
+registerRouter.get("/", getAllUsers);
 
 export default registerRouter;
