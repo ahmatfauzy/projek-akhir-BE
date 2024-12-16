@@ -8,7 +8,11 @@ const prisma = new PrismaClient();
 // get author
 export const getAuthors = async (req: Request, res: Response) => {
   try {
-    const allAutor = await prisma.author.findMany();
+    const allAutor = await prisma.author.findMany({
+      include: {
+        books: true,
+      },
+    });
     res.status(200).send({
       data: allAutor,
       message: "success",
@@ -31,7 +35,7 @@ export const createAuthor = async (req: Request, res: Response) => {
         name: name,
       },
     });
-    res.status(201).json({
+    res.status(0).json({
       data: result,
       message: "succes",
     });
@@ -40,15 +44,40 @@ export const createAuthor = async (req: Request, res: Response) => {
   }
 };
 
+// update
+export const updateAuthor = async (req, res) => {
+  try {
+    const author = await prisma.author.update({
+      where: {
+        id: req.params.id,
+      },
+      data: req.body,
+    });
+
+    res.status(200).send({
+      data: author,
+    });
+  } catch (e) {
+    console.log(e);
+
+    res.status(500).send({
+      message: "error update author",
+    });
+  }
+};
+
 // delete
 export const deleteAuthor = async (req: Request, res: Response) => {
   try {
     const result = await prisma.author.delete({
       where: { id: req.params.id },
+      include: {
+        books: true,
+      },
     });
 
     res.status(200).send({
-      message: "User deleted successfully",
+      message: "AUthor deleted successfully",
       data: result,
     });
   } catch (error) {
@@ -65,38 +94,3 @@ export const deleteAuthor = async (req: Request, res: Response) => {
     }
   }
 };
-
-// update
-export const updateAuthor = async (req, res) => {
-  try {
-    const author = await prisma.author.update({
-      where: {
-        id: req.params.id,
-      },
-      data: req.body,
-    });
-
-    res.status(200).json({ data: author });
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-// delete
-export const deleteUser = async (req: Request, res: Response) => {
-  try {
-    const result = await prisma.author.delete({
-      where: { id: req.params.id },
-    });
-
-    res.status(200).send({
-      message: "Author deleted successfully",
-      data: result,
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Error deleting author",
-    });
-  }
-};
-

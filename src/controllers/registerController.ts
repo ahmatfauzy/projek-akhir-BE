@@ -16,7 +16,7 @@ export const registerUser = async (req: Request, res: Response) => {
         password: hashesPassword,
       },
     });
-    res.status(201).send({
+    res.status(200).send({
       data: result,
       message: "user succesfully",
     });
