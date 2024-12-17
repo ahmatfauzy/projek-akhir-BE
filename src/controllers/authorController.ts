@@ -35,12 +35,14 @@ export const createAuthor = async (req: Request, res: Response) => {
         name: name,
       },
     });
-    res.status(0).json({
+    res.status(0).send({
       data: result,
       message: "succes",
     });
   } catch (error) {
-    res.status(500).json({ error: "Failed to create author" });
+    res.status(500).send({ 
+      error: "Failed to create author" 
+    });
   }
 };
 
@@ -57,12 +59,18 @@ export const updateAuthor = async (req, res) => {
     res.status(200).send({
       data: author,
     });
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
 
-    res.status(500).send({
-      message: "error update author",
-    });
+    if (error.code == "P2025") {
+      res.status(404).send({
+        message: "ID Invalid",
+      });
+    } else {
+      res.status(500).send({
+        message: "error update author",
+      });
+    }
   }
 };
 
@@ -83,7 +91,7 @@ export const deleteAuthor = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
 
-    if ((error = !req.params)) {
+    if (error.code == "P2025") {
       res.status(404).send({
         message: "id invalid",
       });

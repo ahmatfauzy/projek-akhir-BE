@@ -62,9 +62,15 @@ export const updateBook = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
 
-    res.status(500).send({
-      message: "error update book",
-    });
+    if (error.code == "P2025") {
+      res.status(404).send({
+        message: "ID Invalid",
+      });
+    } else {
+      res.status(500).send({
+        message: "error delete book",
+      });
+    }
   }
 };
 
@@ -84,8 +90,14 @@ export const deleteBook = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
 
-    res.status(500).send({
-      message: "error delete book",
-    });
+    if (error.code == "P2025") {
+      res.status(404).send({
+        message: "ID Invalid",
+      });
+    } else {
+      res.status(500).send({
+        message: "error delete book",
+      });
+    }
   }
 };

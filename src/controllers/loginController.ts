@@ -16,7 +16,7 @@ export const LoginUser = async (req, res) => {
       },
     });
     if (!user) {
-      return res.status(404).json({
+      return res.status(404).send({
         message: "user not found",
       });
     }

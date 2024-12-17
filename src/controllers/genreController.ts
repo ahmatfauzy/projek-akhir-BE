@@ -12,12 +12,14 @@ export const createGenre = async (req: Request, res: Response) => {
         name: name,
       },
     });
-    res.status(200).json({
+    res.status(200).send({
       data: result,
-      message: "succes",
+      message: "success create new genre",
     });
   } catch (error) {
-    res.status(500).json({ error: "Failed to create genre" });
+    res.status(500).send({
+      error: "Failed to create genre",
+    });
   }
 };
 
@@ -58,9 +60,16 @@ export const updateGenre = async (res: Response, req: Request) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(505).send({
-      message: "update genre invalid",
-    });
+
+    if (error.code == "P2025") {
+      res.status(404).send({
+        message: "ID Invalid",
+      });
+    } else {
+      res.status(505).send({
+        message: "update genre invalid",
+      });
+    }
   }
 };
 
@@ -81,7 +90,7 @@ export const deleteGenre = async (res: Response, req: Request) => {
   } catch (error) {
     console.log(error);
 
-    if ((error = !req.params)) {
+    if (error.code == "P2025") {
       res.status(404).send({
         message: "id invalid",
       });
