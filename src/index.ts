@@ -25,9 +25,9 @@ app.use("/auth/register", registerRouter);
 app.use("/auth/login", loginRouter);
 
 // 
-app.use("/author", authorRoutes);
-app.use("/books", bookRoutes);
-app.use("/genre", genreRoutes);
+app.use("/api/author", authorRoutes);
+app.use("/api/books", bookRoutes);
+app.use("/api/genre", genreRoutes);
 
 app.listen(PORT, () => {
   console.log(`sERVER IS RUNNING ${PORT}`);

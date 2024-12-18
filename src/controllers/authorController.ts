@@ -10,7 +10,11 @@ export const getAuthors = async (req: Request, res: Response) => {
   try {
     const allAutor = await prisma.author.findMany({
       include: {
-        books: true,
+        books: {
+          include: {
+            genre: true,
+          },
+        },
       },
     });
     res.status(200).send({
@@ -25,29 +29,30 @@ export const getAuthors = async (req: Request, res: Response) => {
     });
   }
 };
-
 // create author
 export const createAuthor = async (req: Request, res: Response) => {
   const { name } = req.body;
+
   try {
     const result = await prisma.author.create({
       data: {
-        name: name,
+        name,
       },
     });
-    res.status(0).send({
+    res.status(200).send({
+      message: "success",
       data: result,
-      message: "succes",
     });
-  } catch (error) {
-    res.status(500).send({ 
-      error: "Failed to create author" 
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send({
+      error: "Failed to create author",
     });
   }
 };
 
 // update
-export const updateAuthor = async (req, res) => {
+export const updateAuthor = async (req: Request, res: Response) => {
   try {
     const author = await prisma.author.update({
       where: {
