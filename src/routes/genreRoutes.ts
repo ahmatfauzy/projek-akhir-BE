@@ -3,14 +3,14 @@ import {
   createGenre,
   getGenre,
   updateGenre,
-  deleteGenre,
+  deleteGenre
 } from "../controllers/genreController";
 
 const genreRoutes = Router();
 
 genreRoutes.post("/", createGenre);
 genreRoutes.get("/", getGenre);
-genreRoutes.put("/", updateGenre);
-genreRoutes.delete("/", deleteGenre);
+genreRoutes.put("/:id", updateGenre);
+genreRoutes.delete("/:id", deleteGenre);
 
 export default genreRoutes;
